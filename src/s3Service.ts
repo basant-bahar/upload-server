@@ -78,7 +78,6 @@ export default class S3Service implements StorageService {
             });
           },
           (err) => {
-            console.log("Error downloading from S3...");
             cb(err, null);
           }
         );
