@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import multer, { FileFilterCallback } from "multer";
 import CustomStorage from "./customStorage.js";
 import FileService from "./fileService.js";
@@ -25,7 +25,7 @@ const storageService = createStorageService();
 const storage = CustomStorage(storageService);
 const upload = createMulter();
 
-app.post("/upload", AuthHelper.checkJwt, (req: express.Request, res: express.Response) => {
+app.post("/upload", AuthHelper.checkJwt, (req: Request, res: Response) => {
   upload(req, res, (error) => {
     if (error) {
       res.status(400).send({ message: error.message });

@@ -3,12 +3,14 @@ import * as jwt from "jsonwebtoken";
 
 export default class AuthHelper {
   static uploadRoles = process.env.UPLOAD_ROLES.split(",").map((role) => role.trim());
+  static publicKey = process.env.CLERK_PEM_PUBLIC_KEY;
 
   static checkJwt(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.headers.authorization.split(" ")[1] as string;
-      let jwtPayload = jwt.verify(token, process.env.JWT_SECRET) as any;
+      const jwtPayload = jwt.verify(token, AuthHelper.publicKey) as any;
       res.locals.jwtPayload = jwtPayload;
+
       if (AuthHelper.uploadRoles.indexOf(jwtPayload.role) !== -1) {
         next();
       } else {
