@@ -36,12 +36,12 @@ app.post("/upload", AuthHelper.checkJwt, (req: Request, res: Response) => {
 });
 app.get("/upload/:fileName", getFile);
 
-function uploadFile(req: express.Request, res: express.Response): void {
+function uploadFile(req: Request, res: Response): void {
   const file = req.file;
   res.send({ status: "success", path: file.path });
 }
 
-function getFile(req: express.Request, res: express.Response): void {
+function getFile(req: Request, res: Response): void {
   const fileName = req.params.fileName;
   const extension = getExtension(fileName).toLowerCase();
   const contentHeader: string = mimeMapping[extension];
