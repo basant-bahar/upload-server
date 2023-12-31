@@ -55,10 +55,13 @@ export default class S3Service implements StorageService {
   }
 
   load(fileName: string, cb: (error: Error | null, filePath: string) => void) {
+    console.log("Loading file ", fileName);
     this.fileService.load(fileName, (error: Error | null, filePath?: string) => {
       if (!error) {
+        console.log("Local cache found ", fileName);
         cb(null, filePath);
       } else {
+        console.log("Loading from s3. No local cache found ", fileName);
         const s3 = new S3Client({ region: this.region });
         const getInput: GetObjectCommandInput = {
           Bucket: this.bucketName,
@@ -68,6 +71,7 @@ export default class S3Service implements StorageService {
         const getCommand = new GetObjectCommand(getInput);
         s3.send(getCommand).then(
           (data) => {
+            console.log("Loaded from s3 ", fileName);
             this.fileService.saveFileLocally(fileName, data, (err, filePath) => {
               if (err) {
                 cb(err, null);
