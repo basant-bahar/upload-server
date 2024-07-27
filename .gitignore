@@ -6,3 +6,7 @@ dist
 .env
 tmp
 .DS_Store
+deploy-*.sh
+Dockerfile
+fly.toml
+.dockerignore
