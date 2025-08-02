@@ -53,10 +53,10 @@ export default class FileService implements StorageService {
   saveFileLocally(fileName: string, data, cb: (error: Error | null, filePath: string) => void) {
     const localFilePath = this.getFilePath(fileName);
     const outStream = fs.createWriteStream(localFilePath);
+    outStream.on('error', (err) => cb(err, null));
+    outStream.on('finish', () => cb(null, localFilePath));
+    
     data.Body.pipe(outStream);
-    data.Body.on("end", () => {
-      cb(null, localFilePath);
-    });
   }
 
   getFilePath(fileName: string): string {
